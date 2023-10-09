@@ -47,7 +47,7 @@ def aStar(m):
         cell=aPath[cell]
     return searchPath,aPath,fwdPath
 
-m=maze(3,3)
+m=maze(5,5)
 m.CreateMaze(loadMaze='maze.csv')
 searchPath,aPath,fwdPath=aStar(m)
 
