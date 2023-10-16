@@ -3,11 +3,11 @@ import heapq
 def greedy_best_first_search(maze, start, goal, heuristic):
     moves = [(0, 1), (0, -1), (1, 0), (-1, 0)]
     
-    priority_queue = [(heuristic(start, goal), start)]
+    queue = [(heuristic(start, goal), start)]
     visited = {start: None}
     
-    while priority_queue:
-        _, current = heapq.heappop(priority_queue)
+    while queue:
+        _, current = heapq.heappop(queue)
         
         if current == goal:
             path = []
@@ -24,21 +24,35 @@ def greedy_best_first_search(maze, start, goal, heuristic):
                 if next_cell not in visited:
                     visited[next_cell] = current
                     priority = heuristic(next_cell, goal)
-                    heapq.heappush(priority_queue, (priority, next_cell))
+                    heapq.heappush(queue, (priority, next_cell))
     
     return None
 
-maze = [
-    ['G', ' ', ' ', ' ', ' '],
-    [' ', '#', '#', ' ', '#'],
-    [' ', '#', ' ', ' ', ' '],
-    [' ', ' ', ' ', '#', ' '],
-    [' ', ' ', ' ', ' ', 'S'],
+rows = int(input("Enter the number of rows: "))
+columns = int(input("Enter the number of columns: "))
 
-]
+maze = []
+for i in range(rows):
+    row = [' '] * columns
+    maze.append(row)
 
-start = (4, 4)
-goal = (0, 0)
+while True:
+    blocked = input("Enter the position of a blocked path (x y), or 'done' to finish: ")
+    if blocked == 'done':
+        break
+    x, y = map(int, blocked.split())
+    if 0 <= x < rows and 0 <= y < columns:
+        maze[x][y] = '#'
+    else:
+        print("Invalid position. Please try again.")
+
+start_x = int(input("Enter the starting X coordinate: "))
+start_y = int(input("Enter the starting Y coordinate: "))
+start = (start_x, start_y)
+
+goal_x = int(input("Enter the goal X coordinate: "))
+goal_y = int(input("Enter the goal Y coordinate: "))
+goal = (goal_x, goal_y)
 
 def manhattan_distance(point1, point2):
     return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
@@ -56,4 +70,3 @@ if path:
         print(row)
 else:
     print("No path found.")
-
